@@ -3,32 +3,14 @@
 
 extern "C" {
     __declspec(dllexport) char* encrypt(char* rawText, int key) {
+        key = key % 128; 
+
         int length = strlen(rawText);
         char* encryptedText = new char[length + 1];
 
         for (int i = 0; i < length; i++) {
             char c = rawText[i];
-
-            if (isalpha(c)) {
-                if (islower(c)) {
-                    c = c + key;
-                    if (c > 'z') {
-                        c = c - 26;
-                    }
-                    else if (c < 'a') {
-                        c = c + 26;
-                    }
-                }
-                else {
-                    c = c + key;
-                    if (c > 'Z') {
-                        c = c - 26;
-                    }
-                    else if (c < 'A') {
-                        c = c + 26;
-                    }
-                }
-            }
+            c = c + key;
             encryptedText[i] = c;
         }
 
@@ -37,32 +19,14 @@ extern "C" {
     }
 
     __declspec(dllexport) char* decrypt(char* encryptedText, int key) {
+        key = key % 128; 
+
         int length = strlen(encryptedText);
         char* decryptedText = new char[length + 1];
 
         for (int i = 0; i < length; i++) {
             char c = encryptedText[i];
-
-            if (isalpha(c)) {
-                if (islower(c)) {
-                    c = c - key;
-                    if (c < 'a') {
-                        c = c + 26;
-                    }
-                    else if (c > 'z') {
-                        c = c - 26;
-                    }
-                }
-                else {
-                    c = c - key;
-                    if (c < 'A') {
-                        c = c + 26;
-                    }
-                    else if (c > 'Z') {
-                        c = c - 26;
-                    }
-                }
-            }
+            c = c - key;
             decryptedText[i] = c;
         }
 
