@@ -1,5 +1,7 @@
 #include <iostream>
 #include <windows.h>
+#include <string>
+#include <cstring>
 using namespace std;
 
 typedef char* (__cdecl *encrypt)(char*, int);
@@ -27,8 +29,17 @@ int main() {
         return 1;
     }
 
-    char* rawText = "Hello, World!";
-    int key = 3;
+    string inputText;
+    int key;
+
+    cout << "Enter the text to be encrypted: ";
+    std::getline(std::cin, inputText);
+
+    cout << "Enter the key: ";
+    cin >> key;
+
+    char* rawText = new char[inputText.length() + 1];
+    strcpy(rawText, inputText.c_str());
 
     char* encryptedText = (*encrypt_ptr)(rawText, key);
     std::cout << "Encrypted text: " << encryptedText << std::endl;
@@ -36,6 +47,7 @@ int main() {
     char* decryptedText = (*decrypt_ptr)(encryptedText, key);
     std::cout << "Decrypted text: " << decryptedText << std::endl;
 
+    delete[] rawText;
     delete[] encryptedText;
     delete[] decryptedText;
 
